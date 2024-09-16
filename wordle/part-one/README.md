@@ -52,7 +52,7 @@ In Part One of this lab, we'll create all the HTML and CSS our Wordle game needs
 1. Navigate to `File` > `Open file...` or hit `Ctrl + o`
 1. Navigate to the `lab-one.html` file saved above and click `Open`
 	![Opening lab file in Chrome](images/open-lab-file-in-chrome.png)
-1. Wahoo! Notice that Chrome is rendering this HTML just like it would any webpage received from a remote web server. Loading a local HTML file from disk is an easy way to write HTML without a server. Here is what you should see:
+1. Wahoo! Notice that Chrome is rendering this HTML just like it would any web page received from a remote web server. Loading a local HTML file from disk is an easy way to write HTML without a server. Here is what you should see:
 	![Opened wordle lab file](images/opened-wordle.png)
 
 ### 3) Explore the HTML I've given you to start off with
@@ -225,10 +225,108 @@ Our page looks great, but our game still doesn't do anything! In the next part o
 
 ## Lab Part Two: Add JavaScript so the game is playable
 
+Now that we have written all of our game's HTML, we need to add a little bit of JavaScript so our game is playable. Remember that I've already written a script that contains a `Wordle` class that contains all the game logic, but we need another script that constructs and initializes a `Wordle` game instance after the web page is loaded.
 
+Using code that other people have written in your own code is a very common task when programming. Here you'll practice using this `Wordle` class I've already written for you.
 
+### 1) Add a `DOMContentLoaded` event listener
 
+We almost always want to wait for the DOM ([Document Object Model](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)) to load before we start interacting with it in JavaScript (add event listeners, change styles, etc.). To do this, we'll use the [`DOMContentLoaded` event](https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event). This event fires after the HTML is parsed and the DOM is constructed, so at that point it is safe to work with the DOM in JavaScript.
 
+1. Open `lab-one.html` and add a new `<script>` element that will hold our new JavaScript to the bottom of the `<head>` element:
+	```html
+	<!DOCTYPE html>
+	<html>
+	<head>
+		...
+		<script></script>
+	</head>
+	```
+1. In this new `<script>` element, add a `DOMContentLoaded` event listener that logs something when the event fires:
+	```html
+	<!DOCTYPE html>
+	<html>
+	<head>
+		...
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				console.log('Content loaded!');
+			});
+		</script>
+	</head>
+	```
+	The `DOMContentLoaded` event is fired on the global `document` object. When calling `addEventListener`, the first argument is the event type (string) and the second argument is the listener (function) that will be called when the event fires. ([See the documentation.](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#syntax)).
+
+1. Save the file and then reload it in Chrome. Open the Debugger (Right click > Inspect), and this time, go to the Console tab. There you should see the `Content loaded!` log!
+
+	![DOM Content Loaded log](images/dom-content-loaded-log.png)
+
+	This log tells us our event listener is working correctly.
+
+### 2) Initialize the `Wordle` game
+
+1. Now we need to construct an instance of the `Wordle` class so our game is playable.
+	- To construct instances of a class, we use the `new` keyword in JavaScript. Classes are blueprints for an object instance, which might not make a lot of sense right now and that's ok. You can think of the class as being a cookie-cutter template (e.g., a metal snow man cutter), and cookies made by that cookie-cutter as instances. In code this cookie analogy would look like `const cookie = new SnowManCookieCutter();`. For our web page, the `Wordle` class is the cookie-cutter that can make a Wordle game instance (cookie) for us.
+
+		So, **update the event listener callback function to include the line `const game = new Wordle();`**
+
+		```html
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				console.log('Content loaded!');
+				const game = new Wordle(); // <--- Add this line.
+			});
+		</script>
+		```
+		Save `lab-one.html` and refresh the page in Chrome. What do you see in the console?
+
+1. Ok, so we have an error, some `Uncaught TypeError ...` blah blah blah. Error messages are important to read because they tell you a) what went wrong, and b) where the error occured (e.g., `lab-one.html:110:25` which means line 110 and character 25 in that line). In this case, I'll help you out with the error so we won't look too closely at the message. The `Wordle` class expects to receive several _arguments_ when a new instance is being constructed, so we need to pass those arguments when we call `new Wordle()`. Like this:
+
+	```html
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			console.log('Content loaded!');
+			const game = new Wordle({
+				superSecretWord: 'earth',
+				keyboardButtons: document.getElementById('keyboard-container').querySelectorAll('button'),
+				tileElements: document.querySelectorAll('.tile'),
+			});
+		});
+	</script>
+	```
+	Let's look closer at these arguments:
+	- `superSecretWord`, as you can probably guess, is the super secret word of the day for our game. If the user types in this word, they will win the game.
+	- `keyboardButtons` is a list of all the `<button>` elements we've added to our page's keyboard. `document.getElementById(...).querySelectorAll('button')` is used to retrieve a list of all the button elements in the keyboard.
+	- Similarly, `tileElements` is a list of all the tile `<div>` elements we've added in our game's board.
+
+1. Save `lab-one.html` and reload the page in Chrome again. What do you see in the console? Nice, no errors! But the game still isn't doing anything when I click on keyboard buttons or type on my actual keyboard. We're missing one more piece...
+1. The `Wordle` game object isn't quite ready to control the game after being constructed. We also need to call the `initialize` method so... well... it can initialize itself. After that, the game should be playable. Add the line `game.initialize();` to the script.
+
+	Your final script should look like:
+
+	```html
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			console.log('Content loaded!');
+			const game = new Wordle({
+				superSecretWord: 'earth',
+				keyboardButtons: document.getElementById('keyboard-container').querySelectorAll('button'),
+				tileElements: document.querySelectorAll('.tile'),
+			});
+			game.initialize(); // <--- Add this line.
+		});
+	</script>
+	```
+1. Save `lab-one.html` and reload the page in Chrome again. What do you see in the console? Nice, now we see `Wordle game is ready!`. Try clicking on some keyboard buttons. Do you see the characters appear in the grid? How about if you type on your keyboard? After filling up a row with your guess, click enter on the page's keyboard or hit it on your real keyboard. How was your guess? Try typing in the super secret word, `earth`, what happens?
+
+### 3) Part Two wrap-up
+
+Now that we're done with part two of this lab, our version of Wordle is playable! Yes there are some differences in behavior, but it is pretty similar. Let's review what we did in part two of the lab:
+- We've added another script that adds a `DOMContentLoaded` event listener
+- We've created a `Wordle` game instance
+- We've `initialize`d our game instance so it's playable
+
+At this point, the lab is done. If you want add more functionality to your Wordle game, see the Extension section below.
 
 ******
 
@@ -244,6 +342,9 @@ Our page looks great, but our game still doesn't do anything! In the next part o
 	![Disable cache](images/disable-cache.png)
 
 - Save your work **frequently**: `Ctrl + S` in the code editor
+
+# Extensions
+
 
 
 <!-- #### Extensions
