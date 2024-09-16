@@ -352,3 +352,7 @@ The real Wordle game has a title bar that spans the top of the page. Add somethi
 ## Check user's word is in the dictionary before accepting it as input
 
 Currently our game doesn't check that the user types a real word before checking a row's letters. If you want to add this dictionary check, copy the JavaScript dictionary in [this file](https://github.com/ianfisk/teaching-materials/blob/main/wordle/part-one/dictionary-extension.js) and see if you can update the `Wordle` class to check this dictionary when checking a row.
+
+## Play around with setting breakpoints in Chrome's JS debugger
+
+Open the Sources tab in the Debugger, find `lab-one.html` in the file explorer on the left hand side, locate a `<script>` element, and click on a line number to add a breakpoint on that line. Now your program will stop executing if that line is hit so you can inspect variables in the program (may need to refresh).
