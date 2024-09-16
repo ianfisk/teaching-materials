@@ -1,4 +1,4 @@
-# HTML, CSS, and JS Lab One
+# HTML, CSS, and JS Lab One: RMHS Wordle
 
 In this lab, we're going to be creating a basic version of the [Wordle](https://www.nytimes.com/games/wordle/index.html) game in a local HTML file. In the process, we'll learn more about web development, Chrome's debugging tools, and Visual Studio Code.
 
