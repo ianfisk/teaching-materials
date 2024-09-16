@@ -345,11 +345,10 @@ At this point, the lab is done. If you want add more functionality to your Wordl
 
 # Extensions
 
+## Add a title bar to the page
 
+The real Wordle game has a title bar that spans the top of the page. Add something similar to your page, and customize it by adding your name to it and a hyperlink ([`<a>` tag](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a)) to the RMHS home page.
 
-<!-- #### Extensions
+## Check user's word is in the dictionary before accepting it as input
 
-- Add a header component to your page
-	- Add your name to the header
-	- Add a link to RMHS home page
-	- Add CSS animations to the grid -->
+Currently our game doesn't check that the user types a real word before checking a row's letters. If you want to add this dictionary check, copy the JavaScript dictionary in [this file](https://github.com/ianfisk/teaching-materials/blob/main/wordle/part-one/dictionary-extension.js) and see if you can update the `Wordle` class to check this dictionary when checking a row.
