@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+
+	<!-- This line makes sure the page looks good on mobile screens. -->
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Rocky Wordle</title>
+
+	<style>
+		/* This makes the box model much more intuitive when working with margin and padding */
+		* {
+			box-sizing: border-box;
+		}
+
+		/* These style rules make the <body> and <html> tags expand to fill the entire content area. */
+		body, html {
+			display: block;
+			height: 100%;
+			margin: 0;
+			overflow: hidden;
+			width: 100%;
+		}
+		.main-container {
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+			margin: 0 auto;
+			max-width: 500px;
+			padding: 5% 0;
+		}
+		.board-container {
+			display: flex;
+			flex: 1;
+			justify-content: center;
+			padding-top: 10%;
+		}
+		#keyboard-container {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+		}
+		.keyboard-row {
+			display: flex;
+			justify-content: center;
+			margin-bottom: 8px;
+		}
+		.keyboard-row > button {
+			background-color: rgb(211, 214, 218);
+			border: 0;
+			border-radius: 4px;
+			flex: 1;
+			font-size: 1.25em;
+			font-weight: bold;
+			height: 58px;
+			margin: 0 6px 0 0;
+			text-transform: uppercase;
+		}
+		.keyboard-row > button:last-child {
+			margin: 0;
+		}
+		.keyboard-row > .spacer {
+			flex: .5;
+		}
+		.keyboard-row > .smaller-text {
+			flex: 1.5;
+			font-size: 12px;
+		}
+		.board {
+			display: flex;
+			flex: 1;
+			flex-direction: column;
+		}
+		.tile-row {
+			display: flex;
+			flex: 1;
+		}
+		.tile {
+			align-items: center;
+			border: 2px solid lightgray;
+			display: flex;
+			flex: 1;
+			font-family: sans-serif;
+			font-size: 2em;
+			justify-content: center;
+			margin: 2px;
+			text-transform: uppercase;
+		}
+	</style>
+	<script>
+		class Wordle {
+			static NumTilesInRow = 5;
+			static NumRows = 6;
+			static Colors = {
+				Gray: '#787c7e',
+				Yellow: '#c9b458',
+				Green: '#6aaa64',
+			};
+
+			superSecretWord;
+			keyboardButtons;
+			activeRowIndex = 0;
+			initialized = false;
+			tileElements = [];
+			keyToButtons = new Map();
+
+			constructor({ superSecretWord, keyboardButtons, tileElements }) {
+				if (superSecretWord.length !== Wordle.NumTilesInRow) {
+					alert(`Super secret word must be ${Wordle.NumTilesInRow} characters long`);
+					throw new Error();
+				}
+				if (!keyboardButtons) {
+					alert('keyboardButtons must be specified');
+					throw new Error();
+				}
+				if (!tileElements) {
+					alert('tileElements must be specified.');
+					throw new Error();
+				}
+				if (tileElements.length !== Wordle.NumTilesInRow * Wordle.NumRows) {
+					alert(`Warning: Expected ${Wordle.NumTilesInRow * Wordle.NumRows} tiles. Found ${tileElements.length}.`);
+				}
+
+				this.superSecretWord = superSecretWord.toLowerCase();
+				this.tileElements = [...tileElements];
+				this.keyboardButtons = [...keyboardButtons];
+			}
+
+			initialize() {
+				if (this.initialized) {
+					return;
+				}
+
+				this._handleKeyboardClicks();
+				this._handleGlobalKeypress();
+
+				this.initialized = true;
+			}
+
+			_handleKeyboardClicks() {
+				for (const button of this.keyboardButtons) {
+					const buttonText = button.textContent.toLowerCase();
+					if (buttonText.length === 1 && /[a-z]/.test(buttonText)) {
+						button.addEventListener('click', () => {
+							this.addCharacter(buttonText);
+						});
+					} else if (buttonText === 'enter') {
+						button.addEventListener('click', () => {
+							this.checkRow();
+						});
+					} else {
+						// Assume any other buttons are the delete one so students are free to change "del".
+						button.addEventListener('click', () => {
+							this.deleteCharacter();
+						});
+					}
+
+					this.keyToButtons.set(buttonText, button);
+				}
+			}
+
+			_handleGlobalKeypress() {
+				document.body.addEventListener('keydown', event => {
+					const key = event.key.toLowerCase();
+					const keyIsInAlphabet = key.length === 1 && !event.metaKey && /[a-z]/.test(key);
+
+					if (keyIsInAlphabet) {
+						event.preventDefault();
+						this.addCharacter(key);
+					} else if (key === 'enter') {
+						event.preventDefault();
+						this.checkRow();
+					} else if (key === 'backspace') {
+						event.preventDefault();
+						this.deleteCharacter();
+					}
+				});
+			}
+
+			checkRow() {
+				document.activeElement.blur();
+
+				if (!this._isRowFull()) {
+					return;
+				}
+
+				const isDone = this._colorTilesAndKeyboard();
+
+				if (isDone) {
+					setTimeout(() => alert("Nice job!"), 100);
+				} else {
+					this.activeRowIndex++;
+					if (this.activeRowIndex >= Wordle.NumRows) {
+						setTimeout(() => alert("Better luck next time"), 100);
+					}
+				}
+			}
+
+			deleteCharacter() {
+				document.activeElement.blur();
+
+				const lastTileFilled = this._getLastFilledTileInRow();
+				if (lastTileFilled) {
+					lastTileFilled.textContent = '';
+				}
+			}
+
+			addCharacter(character) {
+				document.activeElement.blur();
+
+				if (this._isRowFull()) {
+					return;
+				}
+
+				const nextTile = this._getNextTileToFill();
+				if (nextTile) {
+					nextTile.textContent = character.toLowerCase();
+				}
+			}
+
+			_getLastFilledTileInRow() {
+				let lastFilledTileIndex = -1;
+				for (let i = 0; i < this.tileElements.length; i++) {
+					if (this.tileElements[i].textContent.length > 0) {
+						lastFilledTileIndex = i;
+					}
+				}
+
+				const isTileInActiveRow = this.activeRowIndex * Wordle.NumTilesInRow <= lastFilledTileIndex
+						&& lastFilledTileIndex < this.activeRowIndex * Wordle.NumTilesInRow + Wordle.NumTilesInRow;
+
+				return isTileInActiveRow ? this.tileElements[lastFilledTileIndex] : null;
+			}
+
+			_getNextTileToFill() {
+				return this.tileElements.find(tile => tile.textContent.length === 0);
+			}
+
+			_isRowFull() {
+				return this._getFilledRowTiles().length === Wordle.NumTilesInRow;
+			}
+
+			_getFilledRowTiles() {
+				const tilesWithValues = this.tileElements.filter(tile => tile.textContent.length > 0);
+				return tilesWithValues
+						.slice(this.activeRowIndex * Wordle.NumTilesInRow, this.activeRowIndex * Wordle.NumTilesInRow + Wordle.NumTilesInRow);
+			}
+
+			_colorTilesAndKeyboard() {
+				const rowTiles = this._getFilledRowTiles();
+				const rowTilesWithIndices = rowTiles.map((tile, index) => ({ tile, index, used: false }));
+				const secretWordLettersLeft = this.superSecretWord.split('').map((secretChar, index) => ({secretChar, index, used: false}));
+
+				for (const tileWithIndex of rowTilesWithIndices) {
+					const userEnteredChar = tileWithIndex.tile.textContent;
+					const secretCharAtIndex = secretWordLettersLeft[tileWithIndex.index];
+
+					if (userEnteredChar === secretCharAtIndex.secretChar) {
+						secretCharAtIndex.used = true;
+						tileWithIndex.used = true;
+						tileWithIndex.tile.style.backgroundColor = Wordle.Colors.Green;
+						tileWithIndex.tile.style.color = 'white';
+
+						this._colorKeyboardButton(userEnteredChar, Wordle.Colors.Green);
+					}
+				}
+
+				for (const tileWithIndex of rowTilesWithIndices) {
+					if (tileWithIndex.used) continue;
+
+					let color;
+					const secretChar = secretWordLettersLeft.find(x => !x.used && x.secretChar === tileWithIndex.tile.textContent);
+					if (secretChar) {
+						secretChar.used = true;
+						color = Wordle.Colors.Yellow;
+					} else {
+						color = Wordle.Colors.Gray;
+					}
+
+					tileWithIndex.used = true;
+					tileWithIndex.tile.style.backgroundColor = color;
+					tileWithIndex.tile.style.color = 'white';
+
+					this._colorKeyboardButton(tileWithIndex.tile.textContent, color);
+				}
+
+				return rowTiles.map(x => x.textContent).join('') === this.superSecretWord;
+			}
+
+			_colorKeyboardButton(key, color) {
+				const keyboardButton = this.keyToButtons.get(key);
+				if (keyboardButton && !keyboardButton.style.backgroundColor) {
+					keyboardButton.style.backgroundColor = color;
+					keyboardButton.style.color = 'white';
+				}
+			}
+		}
+	</script>
+
+	<!-- NOTE: We are missing a script that starts the game using the Wordle class I've created for you. -->
+</head>
+<body>
+	<main class="main-container">
+		<div class="board-container">
+			<div class="board">
+				<!-- Step 5: Add the game grid here. -->
+			</div>
+		</div>
+		<div id="keyboard-container">
+			<!-- Step 4: The keyboard is missing all vowel keys. Add them in the correct spots. -->
+			<div class="keyboard-row">
+				<button type="button">q</button>
+				<button type="button">w</button>
+				<button type="button">r</button>
+				<button type="button">t</button>
+				<button type="button">y</button>
+				<button type="button">p</button>
+			</div>
+			<div class="keyboard-row">
+				<div class="spacer"></div>
+				<button type="button">s</button>
+				<button type="button">d</button>
+				<button type="button">f</button>
+				<button type="button">g</button>
+				<button type="button">h</button>
+				<button type="button">j</button>
+				<button type="button">k</button>
+				<button type="button">l</button>
+				<div class="spacer"></div>
+			</div>
+			<div class="keyboard-row">
+				<button class="smaller-text" type="button">enter</button>
+				<button type="button">z</button>
+				<button type="button">x</button>
+				<button type="button">c</button>
+				<button type="button">v</button>
+				<button type="button">b</button>
+				<button type="button">n</button>
+				<button type="button">m</button>
+				<button class="smaller-text" type="button">del</button>
+			</div>
+		</div>
+	</main>
+</body>
+</html>
