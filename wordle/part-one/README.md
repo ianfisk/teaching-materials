@@ -317,7 +317,9 @@ We almost always want to wait for the DOM ([Document Object Model](https://devel
 		});
 	</script>
 	```
-1. Save `lab-one.html` and reload the page in Chrome again. What do you see in the console? Nice, now we see `Wordle game is ready!`. Try clicking on some keyboard buttons. Do you see the characters appear in the grid? How about if you type on your keyboard? After filling up a row with your guess, click enter on the page's keyboard or hit it on your real keyboard. How was your guess? Try typing in the super secret word, `earth`, what happens?
+1. Save `lab-one.html` and reload the page in Chrome again. What do you see in the console? Nice, now we see `Wordle game is ready!`. Try clicking on some keyboard buttons. Do you see the characters appear in the grid? How about if you type on your real keyboard? After filling up a row with your guess, click enter on the page's keyboard or hit it on your real keyboard. How was your guess? Try typing in the super secret word, `earth`, what happens?
+
+1. Update the super secret word to whatever you like, save your `lab-one.html`, and have a friend play your game.
 
 ### 3) Part Two wrap-up
 
