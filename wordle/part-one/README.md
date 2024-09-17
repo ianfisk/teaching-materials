@@ -358,3 +358,15 @@ Currently our game doesn't check that the user types a real word before checking
 ## Play around with setting breakpoints in Chrome's JS debugger
 
 Open the Sources tab in the Debugger, find `lab-one.html` in the file explorer on the left hand side, locate a `<script>` element, and click on a line number to add a breakpoint on that line. Now your program will stop executing if that line is hit so you can inspect variables in the program (may need to refresh).
+
+## Add a favicon to the tab title
+
+This documentation https://developer.mozilla.org/en-US/docs/Glossary/Favicon can get you started.
+
+## Add a CSS animation that makes a row jiggle when a guess is wrong
+
+CSS animations can be quite complex. Look at https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations to get started and let me know how I can help.
+
+## Customize your web page or behavior in any way!
+
+Add pictures, change styles, change the winning/losing behavior from just a JS alert. Do anything you want as long as the game is still playable!
