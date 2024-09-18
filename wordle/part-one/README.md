@@ -239,11 +239,20 @@ We almost always want to wait for the DOM ([Document Object Model](https://devel
 	<html>
 	<head>
 		...
+		<script>
+			class Wordle {
+				...
+			}
+		</script>
+
+		<!-- ADD THIS NEW SCRIPT ELEMENT -->
 		<script></script>
 	</head>
 	```
 1. In this new `<script>` element, add a `DOMContentLoaded` event listener that logs something when the event fires:
-	```html
+
+	![DOMContentLoaded event listener](images/dom-content-loaded-1.png)
+	<!-- ```html
 	<!DOCTYPE html>
 	<html>
 	<head>
@@ -254,7 +263,7 @@ We almost always want to wait for the DOM ([Document Object Model](https://devel
 			});
 		</script>
 	</head>
-	```
+	``` -->
 	The `DOMContentLoaded` event is fired on the global `document` object. When calling `addEventListener`, the first argument is the event type (string) and the second argument is the listener (function) that will be called when the event fires. ([See the documentation.](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#syntax)).
 
 1. Save the file and then reload it in Chrome. Open the Debugger (Right click > Inspect), and this time, go to the Console tab. There you should see the `Content loaded!` log!
@@ -270,19 +279,21 @@ We almost always want to wait for the DOM ([Document Object Model](https://devel
 
 		So, **update the event listener callback function to include the line `const game = new Wordle();`**
 
-		```html
+		![DOMContentLoaded listener and game construction](images/dom-content-loaded-2.png)
+		<!-- ```html
 		<script>
 			document.addEventListener('DOMContentLoaded', function() {
 				console.log('Content loaded!');
 				const game = new Wordle(); // <--- Add this line.
 			});
 		</script>
-		```
+		``` -->
 		Save `lab-one.html` and refresh the page in Chrome. What do you see in the console?
 
 1. Ok, so we have an error, some `Uncaught TypeError ...` blah blah blah. Error messages are important to read because they tell you a) what went wrong, and b) where the error occured (e.g., `lab-one.html:110:25` which means line 110 and character 25 in that line). In this case, I'll help you out with the error so we won't look too closely at the message. The `Wordle` class expects to receive several _arguments_ when a new instance is being constructed, so we need to pass those arguments when we call `new Wordle()`. Like this:
 
-	```html
+	![DOMContentLoaded listener and game construction with arguments](images/dom-content-loaded-3.png)
+	<!-- ```html
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
 			console.log('Content loaded!');
@@ -293,7 +304,7 @@ We almost always want to wait for the DOM ([Document Object Model](https://devel
 			});
 		});
 	</script>
-	```
+	``` -->
 	Let's look closer at these arguments:
 	- `superSecretWord`, as you can probably guess, is the super secret word of the day for our game. If the user types in this word, they will win the game.
 	- `keyboardButtons` is a list of all the `<button>` elements we've added to our page's keyboard. `document.getElementById(...).querySelectorAll('button')` is used to retrieve a list of all the button elements in the keyboard.
@@ -304,7 +315,8 @@ We almost always want to wait for the DOM ([Document Object Model](https://devel
 
 	Your final script should look like:
 
-	```html
+	![DOMContent loaded listener and game initialization](images/dom-content-loaded-4.png)
+	<!-- ```html
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
 			console.log('Content loaded!');
@@ -316,12 +328,12 @@ We almost always want to wait for the DOM ([Document Object Model](https://devel
 			game.initialize(); // <--- Add this line.
 		});
 	</script>
-	```
+	``` -->
 1. Save `lab-one.html` and reload the page in Chrome again. What do you see in the console? Nice, now we see `Wordle game is ready!`. Try clicking on some keyboard buttons. Do you see the characters appear in the grid? How about if you type on your real keyboard? After filling up a row with your guess, click enter on the page's keyboard or hit it on your real keyboard. How was your guess? Try typing in the super secret word, `earth`, what happens?
 
-1. Update the super secret word to whatever you like, save your `lab-one.html`, and have a friend play your game.
+### 3) Update the super secret word to whatever you like, save your `lab-one.html`, and have a friend play your game.
 
-### 3) Part Two wrap-up
+### 4) Part Two wrap-up
 
 Now that we're done with part two of this lab, our version of Wordle is playable! Yes there are some differences in behavior, but it is pretty similar. Let's review what we did in part two of the lab:
 - We've added another script that adds a `DOMContentLoaded` event listener
@@ -331,19 +343,7 @@ Now that we're done with part two of this lab, our version of Wordle is playable
 At this point, the lab is done. If you want add more functionality to your Wordle game, see the Extension section below.
 
 ******
-
-
-# Tips and Tricks
-
-- Utilize VS Code's keyboard shortcuts. See them here: https://code.visualstudio.com/docs/getstarted/keybindings
-	- **Copy/paste**: Copy line by moving the cursor to the end with the `End` key, then using `Shift + Home` to highlight the entire line, copy `Ctrl + c`, insert a new line below with `Ctrl + Enter`, and then paste `Ctrl + v`. Repeat.
-	- **Tabbing**: You can move lines left and right using `Ctrl + [` and `Ctrl + ]`, respectively. Maintaining correct tabbing in HTML is critical for readability. Keep sibling elements aligned, and indent children elements by one relative their parent element.
-	- **Selecting text**: Holding `Shift` while moving the cursor (with the arrow keys, `Home`/`End`, etc.) will highlight the text/lines the cursor is moving over. Then you can copy/paste the selected text or do other magical editor things.
-- Toggle `Disable Cache` in the Chrome Debugger's Network tab so files are always refreshed when you reload a page.
-
-	![Disable cache](images/disable-cache.png)
-
-- Save your work **frequently**: `Ctrl + S` in the code editor
+******
 
 # Extensions
 
@@ -370,3 +370,18 @@ CSS animations can be quite complex. Look at https://developer.mozilla.org/en-US
 ## Customize your web page or behavior in any way!
 
 Add pictures, change styles, change the winning/losing behavior from just a JS alert. Do anything you want as long as the game is still playable!
+
+******
+******
+
+# Tips and Tricks
+
+- Utilize VS Code's keyboard shortcuts. See them here: https://code.visualstudio.com/docs/getstarted/keybindings
+	- **Copy/paste**: Copy line by moving the cursor to the end with the `End` key, then using `Shift + Home` to highlight the entire line, copy `Ctrl + c`, insert a new line below with `Ctrl + Enter`, and then paste `Ctrl + v`. Repeat.
+	- **Tabbing**: You can move lines left and right using `Ctrl + [` and `Ctrl + ]`, respectively. Maintaining correct tabbing in HTML is critical for readability. Keep sibling elements aligned, and indent children elements by one relative their parent element.
+	- **Selecting text**: Holding `Shift` while moving the cursor (with the arrow keys, `Home`/`End`, etc.) will highlight the text/lines the cursor is moving over. Then you can copy/paste the selected text or do other magical editor things.
+- Toggle `Disable Cache` in the Chrome Debugger's Network tab so files are always refreshed when you reload a page.
+
+	![Disable cache](images/disable-cache.png)
+
+- Save your work **frequently**: `Ctrl + S` in the code editor
