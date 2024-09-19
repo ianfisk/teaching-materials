@@ -152,27 +152,32 @@ Now we are going to add the missing HTML to make the game grid. We ultimately wa
 
 	![Board rows](images/board-rows.png)
 
+	I'm using `<div>` elements to create rows here because `<div>`s create logical _divisions_ in a page (i.e., divisions when we need rows for our game grid).
+
 1. Save the file, and refresh the page in Chrome. Look at the HTML inspector to see your added rows (currently they have no color, so you will only see them when hovering over them in the inspector). Click on the `board` element and make sure the alignment looks like this:
 
 	![Good board rows](images/board-rows-good.png)
 
-1. Now let's add tile elements to each row. Add **five** `<div>` elements with `class="tile"` as children of each `tile-row` element:
+1. Now let's add tile elements to each row. Add **five** `<span>` elements with `class="tile"` as **children** of each `tile-row` element:
 	```html
 	...
 	<div class="board">
 		<div class="tile-row">
-			<div class="tile"></div>
+			<span class="tile"></span>
 			<!-- ... five tiles total -->
 		</div>
 		...
 	</div>
 	...
 	```
+
+	Here I'm changing to using `<span>` elements primarily to mix it up a bit instead of using `<div>`s for everything, BUT it is important to know that `<div>`s and `<span>`s are **two common generic container elements** to create _divisions_ ("div" short for "division") and organization (parent container elements) in the HTML.
+
 	> TIP: Copy/paste is your friend!
 	>
-	> Copy a `tile` `<div>` by clicking at the end of a line, using `Shift + Home` to highlight the entire line, copy `Ctrl + c`, insert a new line below with `Ctrl + Enter`, and then paste `Ctrl + v`. Repeat. Try to maintain correct tabbing so elements stay aligned. You can move lines left and right using `Ctrl + [` and `Ctrl + ]`, respectively.
+	> Copy a `tile` `<span>` by clicking at the end of a line, using `Shift + Home` to highlight the entire line, copy `Ctrl + c`, insert a new line below with `Ctrl + Enter`, and then paste `Ctrl + v`. Repeat. Try to maintain correct tabbing so elements stay aligned. You can move lines left and right using `Ctrl + [` and `Ctrl + ]`, respectively.
 
-	After adding tiles to one row, it should look like this:
+	After adding tiles to one row, it should look like this (be mindful that the `tile-row` opening tag (`<div ...>`) starts **above** all the `tile` spans, and the `tile-row` closing tag (`</div>`) is **after** the spans):
 
 	![Row with tiles](images/complete-tile-row.png)
 
