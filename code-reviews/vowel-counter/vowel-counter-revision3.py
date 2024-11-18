@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# Students haven't learned about Sets yet, so for now use string constants to
+# store character sets.
 VOWELS = "aeiou"
 CONSONANTS = "bcdfghjklmnpqrstvwxyz"
 
