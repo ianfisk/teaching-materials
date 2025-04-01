@@ -12,7 +12,7 @@ A **computer program** is simply a computer file that contains _step-by-step ins
 
 ## Explore Drawing with Turtles
 
-**Load the website https://pythonandturtle.com/turtle/ and write a program that uses Turtles to draw some shapes!**
+**Load the website https://pythonandturtle.com/turtle/ and write a program that uses Turtles to draw anything you would like!**
 
 You can think of the turtle like a pen or a little robot that we tell exactly where to go by directing it forward `n` steps, turning it left/right some degrees, etc.
 
@@ -33,6 +33,7 @@ Miscellaneous:
 1. Draw a face
 1. Draw overlapping shapes (like some of the fancy star examples)
 1. Write out some text
+1. A spiral
 
 
 ## Turtle cheatsheet
