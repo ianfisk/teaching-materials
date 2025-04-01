@@ -1,5 +1,6 @@
 from turtle import *
 
+# Run this program here: https://pythonandturtle.com/turtle/
 space = Screen()
 alex = Turtle()
 
@@ -7,11 +8,11 @@ alex = Turtle()
 for i in range(5):
     alex.forward(50)
     alex.right(72)
-    
+
 for j in range(6):
     alex.forward(50)
     alex.right(60)
-    j += 1 
+    j += 1
 # ...
 
 # Generalized solution (no input checks)
@@ -27,7 +28,5 @@ def draw_shape(turt, num_sides, side_length = 50):
 for k in range(3, 9):
     draw_shape(alex, k)
 
-num_sides = int(input('enter the number of sides for your polygon'))
+num_sides = int(input('enter the number of sides for your polygon: '))
 draw_shape(alex, num_sides)
-
-
