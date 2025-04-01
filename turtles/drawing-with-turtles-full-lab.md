@@ -4,7 +4,7 @@ In this lab you will explore the following concepts:
 - Using for loops in Python
 - Using an object (a Turtle) in Python
 - Using some mathematical thinking to solve a problem
-- Having fun with code
+- Having fun with code!
 
 ## Task
 
