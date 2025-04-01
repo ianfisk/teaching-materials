@@ -58,6 +58,21 @@ def draw_attractive_design3():
 
     pen.hideturtle()
 
+def draw_spiral():
+    colors = ["red", "orange", "yellow", "green", "blue", "purple"]
+    pen = turtle.Turtle()
+    pen.speed(10)
+    pen.pensize(1)
+
+    size = 1
+    for i in range(300):
+        pen.color(colors[i % 6])
+        pen.forward(size)
+        size += 1
+        pen.left(90)
+
+    pen.hideturtle()
+
 def draw_attractive_design4():
     colors = ["red", "orange", "yellow", "green", "blue", "purple"]
     pen = turtle.Turtle()
@@ -111,6 +126,6 @@ def draw_attractive_design6():
 
     pen.hideturtle()
 
-draw_attractive_design6()
+draw_attractive_design2()
 
 turtle.done()
