@@ -8,7 +8,7 @@ In this lab you will explore
 
 ## Background
 
-A **computer program** is simply a computer file that contains _step-by-step instructions_ written in text (the code) for the computer to follow.
+A **computer program** is simply a computer file that contains _step-by-step instructions_ written in text (the code) for the computer to follow. You'll practice writing code by playing with Python Turtles to draw shapes.
 
 ## Explore Drawing with Turtles
 
