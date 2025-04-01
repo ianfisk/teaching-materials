@@ -6,9 +6,15 @@ In this lab you will explore
 - Using some mathematical thinking to solve a problem
 - Having fun with code!
 
+## Background
+
+A **computer program** is simply a computer file that contains _step-by-step instructions_ written in text (the code) for the computer to follow.
+
 ## Explore Drawing with Turtles
 
 **Load the website https://pythonandturtle.com/turtle/ and write a program that uses Turtles to draw some shapes!**
+
+You can think of the turtle like a pen or a little robot that we tell exactly where to go by directing it forward `n` steps, turning it left/right some degrees, etc.
 
 ### Some ideas of what to draw
 
@@ -31,7 +37,7 @@ Miscellaneous:
 
 ## Turtle cheatsheet
 
-**All programs must have the line `import turtle` at the top, and end with the line `turtle.done()`. For example, here is the general structure:**
+**All programs ran on https://pythonandturtle.com/turtle/ must have the line `import turtle` at the top, and end with the line `turtle.done()`. For example, here is the general structure:**
 
 ```python
 import turtle
@@ -50,9 +56,9 @@ alex = turtle.Turtle('turtle')
 ### Moving the turtle
 
 ```python
-alex.forward(100) # Move forward
-alex.left(90) # Rotate left 90 degrees
-alex.right(120) # Rotate right 120 degrees
+alex.forward(100)	# Move forward
+alex.left(90)		# Rotate left 90 degrees
+alex.right(120)		# Rotate right 120 degrees
 ```
 
 ### Change the turtle's color, speed, and pen size
