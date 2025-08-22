@@ -6,6 +6,8 @@ In this lab you will explore
 - Using some mathematical thinking to solve a problem
 - Having fun with code!
 
+See the [accompanying slides](https://docs.google.com/presentation/d/1OWLGMD06LyNBzGLV6qDTnZYuxRtN1caRXlUb43pV24U/edit?usp=sharing), as well.
+
 ## Background
 
 A **computer program** is simply a computer file that contains _step-by-step instructions_ written in text (the code) for the computer to follow. You'll practice writing code by playing with Python Turtles to draw shapes.
